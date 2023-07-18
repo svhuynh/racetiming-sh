@@ -1,0 +1,19 @@
+<div class="flex-col fill-height">
+    <div class="flex-row no-shrink">
+        <div>
+            <button color="primary" mat-raised-button (click)="showRawTimes()" matTooltip="Temps brut">Temps bruts</button>
+        </div>
+        <h1 class="no-shrink">Temps filtrés</h1>
+        <button mat-icon-button (click)="onFullScreenClick()" matTooltip="Plein écran"><i class="fas fa-expand fa-lg"></i></button>
+    </div>
+    <div class="data-table-container">
+        <app-data-table class="fill-width"
+                        [areItemsLoading]="areTimesLoading"
+                        [fieldsDescription]="fieldsDescription"
+                        (addClick)="onAddClick()"
+                        (deleteSelection)="onDeleteSelection($event)"
+                        (editSelection)="onEditSelection($event)"
+                        (addSave)="onAddSave($event)">
+        </app-data-table>
+    </div>
+</div>

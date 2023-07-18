@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: managers/bibs.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: managers/bibs.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>"use strict";
+
+const sql = require('mssql');
+var serverConnectionConfig = require('../config/config');
+var logger = require('../log');
+
+var self = {};
+
+/**
+ *  This error handler handles errors mostly thrown from mssql. Manages the response that is sent to the request source 
+ *  in case of an error.
+ *
+ * @memberof    managers/bibs
+ * @inner
+ * @returns returns a HTTP 500 response and sends the error to the client
+ */
+self.handleError = function(res, err, connection) {
+  logger.log('error', err);
+  res.status(500).send(err);
+  connection.close();
+}
+
+/**
+ * Gets the list of bibs for a given event
+ *
+ * @memberof    managers/bibs 
+ * @param {Int} eventId - event identifier 
+ * @returns Attributes of all bibs
+ *
+ */
+self.getBibs = function (eventId, res) {
+    var connection = new sql.ConnectionPool(serverConnectionConfig.databaseConfig);
+    connection.connect().then(function () {
+        var request = new sql.Request(connection);
+
+        request.input('EventId', sql.Int, eventId);
+
+        request.execute('[jikko].[dbo].GetEventBibs').then(function (recordSet) {
+            if (res !== null) {            
+                res.statu(200).send(JSON.stringify(recordSet.recordsets));
+            }
+            connection.close();
+        }).catch(function (err) {
+            self.handleError(res, err, connection);
+        });
+    }).catch(function (err) {
+        self.handleError(res, err, connection);
+    });
+};
+
+/**
+ * Create a bib for an event
+ *
+ * @memberof    managers/bibs 
+ * @param {Int} eventId - event identifier
+ * @param {Int} bibInfo - Box properties
+ *
+ */
+self.createBib = function(eventId, bibInfo, res){
+    var connection = new sql.ConnectionPool(serverConnectionConfig.databaseConfig);
+    connection.connect().then(function () {
+        var request = new sql.Request(connection);
+
+        request.input('EventId', sql.Int, eventId);
+        request.input('BibNo', sql.Int, bibInfo.BibNo);
+        request.input('Chip1', sql.Int, bibInfo.Chip1);
+        request.input('Chip2', sql.Int, bibInfo.Chip2);
+
+        request.execute('[jikko].[dbo].AddBib').then(function (recordSet) {
+            if (res !== null) {            
+                res.send(JSON.stringify(recordSet.recordsets));
+            }
+            connection.close();
+        }).catch(function (err) {
+            self.handleError(res, err, connection);
+        });
+    }).catch(function (err) {
+        self.handleError(res, err, connection);
+    });
+};
+
+/**
+ *   Deletes the matching bib according to set parameters
+ *
+ * @memberof    managers/bibs 
+ * @param {Int} eventId - event identifier
+ * @param {Int} bibNo - bib number
+ *
+ */
+self.deleteBib = function(eventId, bibNo, res){
+    var connection = new sql.ConnectionPool(serverConnectionConfig.databaseConfig);
+    connection.connect().then(function () {
+        var request = new sql.Request(connection);
+
+        request.input('EventId', sql.Int, eventId);
+        request.input('BibNo', sql.Int, bibNo);
+
+        request.execute('[jikko].[dbo].RemoveBib').then(function (recordSet) {
+            if (res !== null) {            
+                res.send(JSON.stringify(recordSet.recordsets));
+            }
+            connection.close();
+        }).catch(function (err) {
+            self.handleError(res, err, connection);
+        });
+    }).catch(function (err) {
+        self.handleError(res, err, connection);
+    });
+};
+
+
+
+sql.on('error', err => {
+    sql.close();
+    console.log(err);
+    res.send('3: ' + err);
+});
+
+/**
+ * This module is used for bibs. Procedures are called here for managing bibs. Uses mssql npm module.
+ * 
+ * @class managers/bibs
+ * 
+ */
+module.exports = self;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="managers_authentification.html">managers/authentification</a></li><li><a href="managers_bibs.html">managers/bibs</a></li><li><a href="managers_boxes.html">managers/boxes</a></li><li><a href="managers_events.html">managers/events</a></li><li><a href="managers_participants.html">managers/participants</a></li><li><a href="managers_races.html">managers/races</a></li><li><a href="managers_results.html">managers/results</a></li><li><a href="routes_announcer.html">routes/announcer</a></li><li><a href="routes_bibs.html">routes/bibs</a></li><li><a href="routes_boxes.html">routes/boxes</a></li><li><a href="routes_count.html">routes/count</a></li><li><a href="routes_events.html">routes/events</a></li><li><a href="routes_login.html">routes/login</a></li><li><a href="routes_participants.html">routes/participants</a></li><li><a href="routes_passcodes.html">routes/passcodes</a></li><li><a href="routes_results.html">routes/results</a></li><li><a href="routes_timer.html">routes/timer</a></li></ul><h3>Global</h3><ul><li><a href="global.html#express">express</a></li><li><a href="global.html#logger">logger</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Apr 15 2018 14:02:12 GMT-0400 (Eastern Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

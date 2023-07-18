@@ -1,0 +1,76 @@
+<div class="main-container">
+  <div class="center">
+    <div>
+    <div class="button-row">
+      <button mat-raised-button [matMenuTriggerFor]="animals">Ajouter</button>
+  
+      <mat-menu #animals="matMenu">
+        <button mat-menu-item (click)="onAddRanking()">Catégorie personnalisée</button>
+        <button mat-menu-item [matMenuTriggerFor]="predefined">Catégories prédéfinies</button>
+      </mat-menu>
+  
+      <mat-menu #predefined="matMenu">
+        <button mat-menu-item (click)="onPredefinedBoreal()">Course Boréal 2017</button>
+        <button mat-menu-item (click)="onPredefinedVersants()">Défi des 4 versants 2017</button>
+        <button mat-menu-item (click)="onPredefinedPtitTrain()">P'tit Train du Nord 2017</button>
+        <button mat-menu-item (click)="onPredefinedBoston()">Marathon de Boston</button>
+        <button mat-menu-item (click)="onPredefinedNewYork()">Marathon de Chicago</button>
+        <button mat-menu-item (click)="onPredefinedNewYork()">Marathon de New York</button>
+      </mat-menu>
+  
+      <button mat-raised-button class="middle-field" [disabled]="rankings.length < 1" (click)="onDeleteAll()">Supprimer tout</button>
+    </div>
+    <p *ngIf="rankings != null && rankings.length === 0">Aucune catégorie</p>
+  <mat-accordion displayMode="flat">
+    <mat-expansion-panel *ngFor="let ranking of rankings" class="flex-col" [expanded]="rankings.length < 2">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <div class="expansion-header-container">
+            <div class="center-vertically"><span>{{ ranking.name }}</span></div>
+            <button mat-icon-button class="remove-button" (click)="onRemoveRanking(ranking)" matTooltip="Supprimer"><i class="fas fa-trash"></i></button>
+          </div>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="flex-row">
+        <mat-form-field ngDefaultControl class="basis-30">
+          <mat-select [(ngModel)]="ranking.genderValue" (ngModelChange)="ranking.updateName()" placeholder="Sexe">
+            <mat-option [value]="gender.Any">Tous</mat-option>
+            <mat-option [value]="gender.Male">Hommes</mat-option>
+            <mat-option [value]="gender.Female">Femmes</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-radio-group ngDefaultControl class="flex-col middle-field basis-30" [(ngModel)]="ranking.timingType" (ngModelChange)="ranking.updateName()">
+          <mat-radio-button [value]="timingType.GunTime" color="primary">Temps gun</mat-radio-button>
+          <mat-radio-button [value]="timingType.ChipTime" color="primary">Temps puce</mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+      <div class="flex-row">
+        <mat-form-field ngDefaultControl class="middle-field basis-30">
+          <mat-select [(ngModel)]="ranking.ageComparator" (ngModelChange)="ranking.updateName()" placeholder="Comparateur d'âge">
+            <mat-option [value]="ageComparator.Between">entre</mat-option>
+            <mat-option [value]="ageComparator.SmallerOrEqual">plus petit ou égal à</mat-option>
+            <mat-option [value]="ageComparator.BiggerOrEqual">plus grand ou égal à</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field ngDefaultControl class="basis-30" *ngIf="ranking.ageComparator === ageComparator.SmallerOrEqual || ranking.ageComparator === ageComparator.BiggerOrEqual">
+          <input matInput [(ngModel)]="ranking.ageValue" (ngModelChange)="ranking.updateName()" type="number" placeholder="Valeur">
+        </mat-form-field>
+
+        <div>
+          <mat-form-field ngDefaultControl class="basis-30" *ngIf="ranking.ageComparator === ageComparator.Between">
+            <input matInput [(ngModel)]="ranking.ageMin" (ngModelChange)="ranking.updateName()" type="number" placeholder="Borne inférieure">
+          </mat-form-field>
+
+          <mat-form-field ngDefaultControl class="basis-30" *ngIf="ranking.ageComparator === ageComparator.Between">
+            <input matInput [(ngModel)]="ranking.ageMax" (ngModelChange)="ranking.updateName()" type="number" placeholder="Borne supérieure">
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>
+  </div>
+</div>

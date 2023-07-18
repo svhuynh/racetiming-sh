@@ -1,0 +1,101 @@
+<div class="main-container mat-elevation-z8">
+  <div class="header" [style.display]="selection.isEmpty() ? '' : 'none'">
+    <button mat-button *ngIf="canAddItems" (click)="onAddClick()" color="primary">Ajouter</button>
+
+    <mat-form-field floatPlaceholder="never" class="grow">
+      <input matInput #filter placeholder="Rechercher" [disabled]="areItemsLoading">
+      <span matPrefix>
+        <i class="fas fa-search"></i>
+      </span>
+      <span matSuffix class="suffix-button" (click)="clearFilter()" [style.visibility]="clearFilterButtonVisibility()">
+        <i class="fas fa-times"></i>
+      </span>
+    </mat-form-field>
+
+    <mat-form-field class="no-grow">
+      <mat-select [formControl]="displayedColumns" multiple>
+        <mat-select-trigger>
+          <span *ngIf="displayedColumns.value">{{displayedColumns.value.length - 1}} colonnes</span>
+        </mat-select-trigger>
+        <div>
+          <mat-option #test *ngFor="let field of allColumns" [style.display]="field === 'select' ? 'none' : ''" [value]="field" [disabled]="displayedColumns.value.length <= 3 && displayedColumns.value.indexOf(field) !== -1">
+            {{_fieldsDescription.get(field) != null ? _fieldsDescription.get(field).displayName : ''}}
+          </mat-option>
+        </div>
+      </mat-select>
+    </mat-form-field>
+    <button class="police" mat-icon-button matTooltip="Agrandir la police" (click)="policeTaille(2)"><i class="fas fa-plus"></i></button>
+    <button class="police" mat-icon-button matTooltip="Diminuer la police" (click)="policeTaille(-2)"><i class="fas fa-minus"></i></button>
+  </div>
+  <div class="header selection-header" *ngIf="!selection.isEmpty()">
+    {{selection.selected.length}} {{selection.selected.length == 1 ? 'élément sélectionné' : 'éléments sélectionnés'}}
+    <div>
+      <button *ngIf="selection.selected.length === 1" mat-icon-button (click)="onEditSelection()" matTooltip="Modifier">
+        <i class="fas fa-pencil-alt fa-lg"></i>
+      </button>
+      <button mat-icon-button (click)="onDeleteSelection()" matTooltip="Supprimer">
+        <i class="fas fa-trash fa-lg"></i>
+      </button>
+    </div>
+  </div>
+  <div class="table-container">
+    <mat-table #table [dataSource]="dataSource" matSort>
+
+      <!--- Note that these columns can be defined in any order.
+            The actual rendered columns are set as a property on the row definition" -->
+
+      <!-- Checkbox Column -->
+      <ng-container matColumnDef="select">
+        <mat-header-cell *matHeaderCellDef [style.display]="canEditItems ? '' : 'none'">
+          <div class="checkbox-container">
+            <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()"
+              [disabled]="dataSource.renderedData.length == 0 || areItemsLoading" [disableRipple]="true">
+              <!-- &nbsp; fixes the checkbox animation in mat-table (5.2.1) -->
+              <!-- https://github.com/angular/material2/issues/8600 -->
+              &nbsp;
+            </mat-checkbox>
+          </div>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let row" [style.display]="canEditItems ? '' : 'none'">
+          <div class="checkbox-container">
+            <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row.id) : null" [checked]="selection.isSelected(row.id)"
+              [disableRipple]="true">
+              <!-- &nbsp; fixes the checkbox animation in mat-table (5.2.1) -->
+              <!-- https://github.com/angular/material2/issues/8600 -->
+              &nbsp;
+            </mat-checkbox>
+          </div>
+        </mat-cell>
+      </ng-container>
+
+      <!-- ID Column -->
+      <ng-container matColumnDef="id">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.id}} </mat-cell>
+      </ng-container>
+
+      <!-- Data Columns -->
+      <ng-container *ngFor="let field of dataFields" [matColumnDef]="field">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          disabled="true"
+          [title]="_fieldsDescription.get(field).displayName"
+          [ngStyle]="{'font-size': '30px', 'color': 'rgb(110, 110, 110)'}">
+          {{ _fieldsDescription.get(field).displayName }}
+        </mat-header-cell>
+        <mat-cell *matCellDef="let row" title="{{ row[field] | dataTablePipe:_fieldsDescription.get(field).pipe }}" [ngStyle]="{'font-size': police + 'px'}">
+          {{ row[field] | dataTablePipe:_fieldsDescription.get(field).pipe }}
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns.value"></mat-header-row>
+      <mat-row [ngClass]="{'alternate-even-odd': alternateEvenOdd}" *matRowDef="let row; columns: displayedColumns.value;" [class.example-selected-row]="selection.isSelected(row.id)"
+        (click)="toggleRowSelection(row.id)">
+      </mat-row>
+
+    </mat-table>
+  </div>
+  <mat-spinner *ngIf="areItemsLoading" class="spinner"></mat-spinner>
+  <div class="no-results" *ngIf="dataSource.renderedData.length == 0 && !areItemsLoading">
+    Aucun item ne correspond aux critères.
+  </div>
+</div>

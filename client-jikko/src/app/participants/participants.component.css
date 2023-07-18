@@ -1,0 +1,40 @@
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.no-shrink {
+  flex-shrink: 0;
+}
+
+.data-table-container {
+  display: flex;
+  flex-grow: 1;
+  width: 100%;
+}
+
+.fill-width {
+  width: 100%;
+}
+
+.fill-height {
+  height: 100%;
+}
+
+.participants-options {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 0.5em;
+  flex-shrink: 0;
+}
+
+.excel {
+  /* margin-top: 0.5em; */
+  margin-right: 0.5em;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}

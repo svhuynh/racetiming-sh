@@ -1,0 +1,40 @@
+<h1 mat-dialog-title>{{data.title}}</h1>
+<div mat-dialog-content>
+  <mat-form-field *ngFor="let field of dataFields">
+    <input *ngIf="getFieldInputType(field) === 'text'" matInput [(ngModel)]="item[field]" [placeholder]="getFieldPlaceholder(field)" type="text" [name]="field" [disabled]="getFieldDisabled(field)">
+    <input *ngIf="getFieldInputType(field) === 'number'" matInput [(ngModel)]="item[field]" [placeholder]="getFieldPlaceholder(field)" type="number" [name]="field" [disabled]="getFieldDisabled(field)">
+    <input *ngIf="getFieldInputType(field) === 'phone'" matInput [(ngModel)]="item[field]" [placeholder]="getFieldPlaceholder(field)" type="phone" [name]="field" [disabled]="getFieldDisabled(field)">
+    <input *ngIf="getFieldInputType(field) === 'email'" matInput [(ngModel)]="item[field]" [placeholder]="getFieldPlaceholder(field)" type="email" [name]="field" [disabled]="getFieldDisabled(field)">
+    
+    <div *ngIf="getFieldInputType(field) === 'date'" class="flex-row">
+      <input class="grow" matInput [(ngModel)]="item[field]" [matDatepicker]="picker1" [placeholder]="getFieldPlaceholder(field)" [name]="field">
+      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+      <mat-datepicker #picker1></mat-datepicker>
+    </div>
+
+    <div *ngIf="getFieldInputType(field) === 'time'" class="flex-row">
+      <input class="grow" matInput [(ngModel)] = "item[field]" type="time" step="1" [placeholder]="getFieldPlaceholder(field)" [name]="field">
+    </div>
+
+    <mat-select *ngIf="getFieldInputType(field) === 'mat-select'" [(ngModel)]="item[field]" [placeholder]="getFieldPlaceholder(field)" [name]="field">
+        <mat-option [value]="0">0</mat-option>
+    </mat-select>
+
+    <mat-select *ngIf="getFieldInputType(field) === 'mat-select position'" [(ngModel)]="item[field]" [placeholder]="getFieldPlaceholder(field)" [name]="field">
+        <mat-option *ngFor="let position of data.comboBoxData.positions" [value]="position">
+            {{ position | toMeter}}
+        </mat-option>
+    </mat-select>
+
+    <mat-select *ngIf="getFieldInputType(field) === 'mat-select gender'" [(ngModel)]="item[field]" [placeholder]="getFieldPlaceholder(field)" [name]="field">
+        <mat-option [value]=0>Homme</mat-option>
+        <mat-option [value]=1>Femme</mat-option>
+    </mat-select>
+
+  </mat-form-field>
+
+</div>
+<div mat-dialog-actions class="actions">
+  <button mat-button [mat-dialog-close]="item" (click)="onOk()">Ok</button>
+  <button mat-button [mat-dialog-close]="null">Annuler</button>
+</div>

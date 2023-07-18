@@ -1,0 +1,31 @@
+<h2 mat-dialog-title>Duplication des épreuves</h2>
+<p>Veuillez choisir des épreuves à dupliquer dans des événements</p>
+
+<div class="overflowMatAccordion">
+  <mat-accordion>
+    <mat-expansion-panel *ngFor="let event of allEvents">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{event.Name}}
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <div class="overflowMatSelectionList">
+        <mat-selection-list>
+          <mat-list-option *ngFor="let race of event.races" (selectionChange)="addRaceToDuplicate($event, event.Id, race.Id)">
+            {{race.Name}}
+          </mat-list-option>
+        </mat-selection-list>
+      </div>
+      
+    </mat-expansion-panel>
+
+  </mat-accordion>
+</div>
+
+
+
+<div mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="data">Dupliquer</button>
+  <button mat-button (click)="onNoClick()">Annuler</button>
+</div>

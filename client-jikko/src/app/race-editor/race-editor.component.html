@@ -1,0 +1,144 @@
+
+<div class="main-container">
+  <h1 class="mat-display-1 no-shrink">Épreuve</h1>
+
+  <app-race-visu class="no-shrink" [boxes]="boxes"></app-race-visu>
+
+  <mat-tab-group (selectedTabChange)="onClickTab($event)">
+    <mat-tab label="Détails">
+
+        <form id="raceForm" #raceFormVar="ngForm" class="forms">
+            <div class="forms-row">
+              <div>
+                <mat-form-field class="grow shrink name-input">
+                  <input autofocus required matInput placeholder="Nom de l'épreuve" type="text" [(ngModel)]="raceName" name="name">
+                </mat-form-field>
+                <div class="flex-row">
+
+                  <div class="flex-col">
+                    <mat-form-field class="grow shrink">
+                      <input matInput type="number" placeholder="Cadence Maximale" [(ngModel)]="rhythm" name="rhythm">
+                    </mat-form-field>
+                    <mat-form-field class="grow shrink">
+                        <input matInput [matDatepicker]="picker1" placeholder="Date de début" [(ngModel)]="raceDate" name="date">
+                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                        <mat-datepicker #picker1></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="flex-col">
+                    <mat-form-field class="grow shrink">
+                        <mat-select [(ngModel)]="raceDiscipline" placeholder="Unité" name="discipline">
+                            <mat-option [value]="1">min/km</mat-option>
+                            <mat-option [value]="2">km/h</mat-option>
+                            <mat-option [value]="3">sec/100m</mat-option>
+                            <mat-option [value]="4">m/min</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                      <mat-form-field class="grow shrink">
+                          <input matInput type="time" step="1" placeholder="Heure" [(ngModel)]="raceTime" name="time">
+                      </mat-form-field>
+                  </div>
+                </div>
+              </div>
+                
+              <div class="flex-col" style="width: 88px;">
+                <mat-form-field class="grow shrink" [style.visibility]= "'hidden'">
+                  <input matInput type="text">
+                </mat-form-field>
+                <mat-form-field class="grow shrink" [style.visibility]= "'hidden'">
+                  <input matInput type="text">
+                </mat-form-field>
+                <button mat-raised-button color="primary" (click)="setCurrentTime()" matTooltip="Temps courant"><i class="fas fa-clock fa-lg"></i></button>
+              </div>
+              
+            </div>
+
+        </form>
+
+
+    </mat-tab>
+
+    <mat-tab label="Disposition">
+      <div class="center-row">
+        <div class="col">
+          <mat-toolbar>
+              Outils
+          </mat-toolbar>
+          <mat-spinner *ngIf="areToolsLoading" class="spinner"></mat-spinner>
+          <mat-card *ngFor="let item of tools"
+            (click)="onToolClicked(item)"
+            [dndDraggable]="item"
+            dndEffectAllowed="copy"
+            [dndType]="item.type"
+            [style.background]="item.color">
+            <i *ngIf="item.type === 'box'" class="fas fa-cube"></i>
+            <i *ngIf="item.type === 'loop'" class="fas fa-undo-alt fa-rotate-285"></i>
+            {{item.name}}
+          </mat-card>
+        </div>
+      
+        <div  class="col-2">
+          <mat-toolbar>
+              Disposition
+          </mat-toolbar>
+          <mat-spinner *ngIf="isRaceLoading" class="spinner"></mat-spinner>
+          <div class="stay-visible"
+            dndDropzone
+            (dndDrop)="onDrop($event, nestableList)"
+            [ngClass]="{'padded': nestableList.length === 0}">
+            {{nestableList.length === 0 && !isRaceLoading ? "Déposez des boites de lectures ici" : ""}}
+            <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: nestableList }"></ng-container>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Catégories" [disabled]="rankings === null">
+      <div class="space-top">
+        <app-reports></app-reports>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+
+  <div class="centered-bottom-row no-shrink" *ngIf="!isRaceLoading">
+    <button mat-raised-button form="raceForm" color="primary" (click)="onSubmit()">Sauvegarder</button>
+    <button mat-raised-button form="raceForm" color="primary" (click)="onCancel()">Annuler</button>
+  </div>
+</div>
+
+<ng-template #recursiveList let-list>
+  <mat-card dndPlaceholderRef class="dndPlaceholder">Déposer ici</mat-card>
+  <mat-card *ngFor="let item of list"
+            [dndDraggable]="item"
+            dndEffectAllowed="move"
+            [dndDisableIf]="item.disable"
+            (dndMoved)="onDragged(item, list, 'move')"
+            [dndType]="item.type"
+            [style.background]="item.color">
+    <div class="flex-row">
+      <i *ngIf="item.type === 'box'" class="fas fa-cube"></i>
+      <i *ngIf="item.type === 'loop'" class="fas fa-undo-alt fa-rotate-285"></i>
+      <div class="grow">
+        {{item.name}}
+        <span *ngIf="item.type !== 'loop'">(split : {{ getBoxSplits(item) }} km)</span>
+      </div>
+      <span *ngIf="item.type === 'box'">
+        <input form="raceForm" type="number" [(ngModel)]="item.distance" (input)="updateSimplifiedBoxes()" [min]="0.0" max="999.0" step="0.01">
+        <span class="distance-suffix">km</span>
+      </span>
+      <span *ngIf="item.type === 'loop'">
+        <input form="raceForm" type="number" [(ngModel)]="item.laps" (input)="updateSimplifiedBoxes()" min="1" max="999" step="1">
+        <span class="laps-suffix">répétitions</span>
+      </span>
+      <a (click)="onRemoveItem(item, list)"><i class="fas fa-times"></i></a>
+    </div>
+    <div *ngIf="item.type === 'loop' && item.children.length === 0">Déposez des boites de lectures ici</div>
+    <div *ngIf="item.children"
+      [dndDropzone]="['box']" 
+      class="loop"
+      (dndDrop)="onDrop($event, item.children)">
+      <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: item.children }"></ng-container>
+    </div>
+  </mat-card>
+</ng-template>

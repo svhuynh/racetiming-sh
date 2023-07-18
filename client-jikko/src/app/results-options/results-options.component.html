@@ -1,0 +1,22 @@
+<div class="container">
+
+  <div>
+    <button [style.visibility]= "'hidden'">Générer les rapports</button>
+  </div>
+
+  <div class="flex-row">
+    <mat-form-field >
+      <input matInput placeholder="Lien public" type="text" value={{URL}} disabled=true>
+    </mat-form-field>
+  
+    <div class="flex-row">
+      <button mat-icon-button ngxClipboard [cbContent]="URL" matTooltip="Copier le lien"><i class="fas fa-clipboard fa-lg"></i></button>
+      <a target="_blank" [href]="URL"><button mat-icon-button matTooltip="Ouvrir le lien"><i class="fas fa-external-link-square-alt fa-lg"></i></button></a>
+    </div>
+  </div>
+
+  <app-download-excel-file [fieldsDescription]="fieldsDescription"
+                           (click)="downloadJSONToXLSX()">
+  </app-download-excel-file>
+  
+</div>

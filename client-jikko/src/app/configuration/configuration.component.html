@@ -1,0 +1,93 @@
+<h1 class="mat-display-1">Configuration</h1>
+
+
+<div class="flexRow">
+    <div class="flexCol half-parent">
+        <mat-form-field>
+          <input matInput [(ngModel)] = "eventName" placeholder="Nom de l'événement">
+        </mat-form-field>
+    
+        <div class="flexRow">
+            <mat-form-field class="half-parent marginRight">
+                <input matInput [(ngModel)] = "dateStart" [matDatepicker]="picker1" placeholder="Date de début" readonly>
+                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
+            </mat-form-field>
+    
+            <mat-form-field class="half-parent">
+                <input matInput [(ngModel)] = "timeStart" type="time" step="1" placeholder="Heure">
+            </mat-form-field>
+        </div>
+    
+        <div class="flexRow">
+            <mat-form-field class="half-parent marginRight">
+                <input matInput [(ngModel)] = "dateEnd" [matDatepicker]="picker2" placeholder="Date de fin" readonly>
+                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                <mat-datepicker #picker2></mat-datepicker>
+            </mat-form-field>
+        
+            <mat-form-field class="half-parent">
+                <input matInput [(ngModel)] = "timeEnd" type="time" step="1" placeholder="Heure">
+            </mat-form-field>
+        </div>
+    
+        <mat-form-field>
+            <textarea matInput [(ngModel)] = "description" placeholder="Description"></textarea>
+        </mat-form-field>
+
+        <mat-form-field>
+                <input matInput [(ngModel)] = "placeText"  placeholder="Lieu" #search>
+        </mat-form-field>
+    </div>
+
+    <div class="flexCol half-parent">
+        <agm-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="false" [zoom]="zoom">
+            <agm-marker [latitude]="latitude" [longitude]="longitude" [markerDraggable]="true" (dragEnd)="markerMoved($event)"></agm-marker>
+        </agm-map>
+    </div>
+
+</div>
+
+<br>
+
+<h1 class="mat-display-1">Épreuves</h1>
+<mat-spinner *ngIf="areRacesLoading" class="spinner"></mat-spinner>
+<mat-list *ngIf="!areRacesLoading">
+    <h3 *ngIf="!areRacesLoading && races.length === 0" >Aucune épreuve</h3>
+    <div class="races">
+        <mat-card *ngFor="let race of races" (click)="onSaveEditRace(race.Id)">
+        
+        <mat-card-header>
+            <mat-card-title><h2 style="font-weight: bolder !important;"><mat-icon mat-list-icon><i class="fas fa-flag"></i></mat-icon>{{race.Name}}</h2></mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+            <p>
+                <!-- Début: {{race.StartDate | dateTimeUtc | date: 'medium'}} -->
+                Date: {{race.StartDate | dateTimeUtc | date: 'fullDate'}}
+                <br>
+                Heure: {{race.StartDate | dateTimeUtc | date: 'mediumTime'}}
+            </p>
+        </mat-card-content>
+
+        <mat-card-actions class="buttonsGroup">
+            <button mat-mini-fab (click)="onSaveEditRace(race.Id)" matTooltip="Modifier"><i class="fas fa-pencil-alt"></i></button>
+            <button mat-mini-fab (click)="onDeleteRace(race, $event)" matTooltip="Supprimer"><i class="fas fa-trash-alt"></i></button>
+        </mat-card-actions>
+        </mat-card>
+    </div>
+</mat-list>
+
+<br>
+
+<button mat-mini-fab (click)="onSaveAddRace()" matTooltip="Ajouter une épreuve"><i class="fas fa-plus"></i></button>
+
+<br>
+<br>
+<br>
+
+<div class="buttonsGroup">
+    <button mat-mini-fab matTooltip="Enregistrer" (click)="onSave()"><i class="fas fa-save"></i></button>
+    <button mat-mini-fab matTooltip="Supprimer" (click)="onDeleteEvent()"><i class="fas fa-trash-alt"></i></button>
+    <button mat-mini-fab matTooltip="Dupliquer" (click)="onDuplicateRaceEvent()"><i class="fas fa-copy"></i></button>
+</div>

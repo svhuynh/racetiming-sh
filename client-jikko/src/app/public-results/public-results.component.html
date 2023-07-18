@@ -1,0 +1,33 @@
+<div class="flex-col fill-height fill-width">
+
+  <div class="flex-row no-shrink">
+    <img  src="https://jikko.ca/sites/jikko.ca/files/logo-header.png" alt="logo">
+  </div>
+
+  <div *ngIf="event !== undefined" class="no-shrink">
+    <h1>{{event.Name}}</h1>
+  </div>
+
+  <mat-spinner *ngIf="areResultsLoading"></mat-spinner>
+  
+  <mat-tab-group class="grow" [style.visibility]="!areResultsLoading ? '' : 'hidden'">
+    <div *ngFor="let race of eventRaces">
+      <mat-tab label="{{race.Name}}">
+        <div class="tab-container">
+          <p *ngIf="!isThereAnyResult(race)" class="no-shrink">
+              Il n'y a pas de résultats pour le moment.
+          </p>
+          <app-data-table
+            [style.visibility]="isThereAnyResult(race) ? '' : 'hidden'"
+            [areItemsLoading]="areResultsLoading"
+            [fieldsDescription]="race.fieldsDescription"
+            [data]="race.publicResults"
+            [canAddItems]="false"
+            [canEditItems]="false">
+          </app-data-table>
+        </div>
+      </mat-tab>
+    </div>
+  </mat-tab-group>
+  
+</div>

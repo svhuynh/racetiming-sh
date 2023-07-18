@@ -1,0 +1,82 @@
+.flex-col {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-around;
+}
+
+.col-1 {
+    overflow: auto;
+    flex-basis: 50%;
+}
+
+.col-2 {
+    overflow: auto;
+    flex-basis: 50%;
+    padding-top: 0.7em;
+}
+
+.flex-row {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    justify-content: space-around;
+}
+
+.row-1 {
+    overflow: auto;
+    flex-basis: 25%;
+}
+
+.row-2 {
+    overflow: auto;
+    flex-basis: 75%;
+}
+
+.elevation-padding {
+    padding-right: 0.6em;
+    padding-left: 0.6em;
+    padding-bottom: 1em;
+}
+
+.flex {
+    display: flex;
+}
+
+.no-shrink {
+    flex-shrink: 0;
+}
+
+.mat-button-toggle-checked {
+    color: white !important;
+    background-color: #ff5722;
+}
+
+mat-button-toggle-group {
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 1em;
+}
+
+mat-button-toggle {
+    color: black;
+}
+
+mat-button-toggle:hover:not(.mat-button-toggle-checked) {
+    background-color: rgb(223, 223, 223);
+}
+
+.full-screen {
+    flex-basis: 100%;
+}
+
+.hide {
+    display: none;
+}
+
+h1, .row-1, .row-2, .col-1, .col-2, mat-button-toggle-group {
+    -webkit-transition: all 0.2s linear;
+    -moz-transition: all 0.2s linear;
+    -o-transition: all 0.2s linear;
+    transition: all 0.2s linear;
+}

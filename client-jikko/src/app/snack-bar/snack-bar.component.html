@@ -1,0 +1,4 @@
+<span>
+    <i class="fas fa-check" [ngClass]="{'fa-check': data.type === 1, 'fa-exclamation': data.type === 2, 'fa-times': data.type === 3}"></i>
+    <span>{{ data.message }}</span>
+</span>

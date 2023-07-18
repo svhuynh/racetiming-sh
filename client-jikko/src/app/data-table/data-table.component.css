@@ -1,0 +1,154 @@
+.main-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 470px;
+  max-height: 100%;
+  min-height: 171px;
+}
+  
+.header {
+  height: 48px;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  padding: 0 24px;
+  font-size: 20px;
+  justify-content: space-between;
+  border-bottom: 1px solid transparent;
+}
+
+.mat-input-container {
+  font-size: 14px;
+  flex-grow: 1;
+  margin-left: 32px;
+  margin-top: 8px;
+}
+
+.no-results {
+  display: flex;
+  justify-content: center;
+  padding: 24px;
+  font-size: 12px;
+  font-style: italic;
+  flex-grow: 1;
+}
+
+.selection-header {
+  font-size: 18px;
+  background: rgba(255, 64, 129, 0.3);
+  border-bottom: 1px solid #d696ac;
+}
+
+.mat-column-select {
+  max-width: 54px;
+}
+
+.mat-row:hover, .example-selected-row {
+  background: #f5f5f5;
+}
+
+.mat-row:active, .mat-row.example-selected-row {
+  background: #eaeaea;
+}
+
+.mat-table {
+  overflow: auto;
+  max-height: 75%;
+}
+
+.spinner {
+  margin: 1em auto;
+}
+
+mat-cell, mat-header-cell {
+  white-space: nowrap !important;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 14ch;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+/* -------- Fix for columns alignment -------- */
+.mat-table {
+  display: table;
+  width: 100%;
+}
+.mat-table > .mat-header-row, .mat-table > .mat-row {
+  display: table-row;
+  padding: 20px;
+  border: none;
+}
+.mat-table > .mat-header-row > .mat-header-cell, .mat-table > .mat-header-row > .mat-cell, .mat-table > .mat-row > .mat-header-cell, .mat-table > .mat-row > .mat-cell {
+  display: table-cell;
+  margin-left: 30px;
+  vertical-align: middle;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+/* ------------------------------------------- */
+
+/* Centered checkboxes */
+.checkbox-container {
+  min-width: 50px;
+  display: flex;
+  justify-content: center;
+}
+
+.table-container {
+  overflow: auto;
+  max-width: 100%;
+  flex-grow: 1;
+}
+ 
+/* Compact rows */
+mat-row, mat-header-row {
+  min-height: 2px;
+}
+
+.grow {
+  flex-grow: 1;
+}
+
+.no-grow {
+  flex-grow: 0;
+}
+
+mat-form-field i {
+  margin-right: 0.6em;
+}
+
+.suffix-button {
+  cursor: pointer;
+}
+
+div.header {
+  padding-top: 0px;
+}
+
+::ng-deep .header div.mat-input-infix.mat-form-field-infix {
+  border-top: 0px;
+}
+ 
+.header mat-form-field {
+  margin-bottom: -5px;
+}
+
+::ng-deep div.mat-paginator-container {
+  min-height: 46px;
+  max-height: 46px;
+}
+
+::ng-deep div.mat-paginator-container div.mat-paginator-range-actions {
+  min-height: 0px;
+}
+
+::ng-deep mat-checkbox div.mat-checkbox-inner-container {
+  width: 17px;
+  height: 17px;
+  margin: 2px 0 0 0;
+}
+
+::ng-deep mat-checkbox span.mat-checkbox-label {
+  line-height: 1 !important;
+}

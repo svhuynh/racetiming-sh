@@ -1,0 +1,88 @@
+.main-container {
+    height: 100%;
+    min-width: 100%;
+    padding: 0.5em;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.flex {
+    display: flex;
+}
+
+.flex-row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.flex-col {
+    display: flex;
+    flex-direction: column;
+}
+
+.grow {
+    flex-grow: 1;
+}
+
+.remove-button {
+    margin-left: 0.5em;
+}
+
+.middle-field {
+    margin-left: 0.7em;
+    margin-right: 0.7em;
+}
+
+mat-card {
+    margin-bottom: 0.7em;
+    margin-right: 0.7em;
+}
+
+div.mat-input-wrapper.mat-form-field-wrapper {
+    padding-bottom: 0.85em !important;
+}
+
+mat-radio-button {
+    margin-bottom: 0.3em;
+}
+
+.button-row {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 0.7em;
+    flex-shrink: 0;
+    justify-content: center;
+}
+.expansion-header-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.center-vertically {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+}
+
+mat-accordion {
+    overflow: hidden;
+}
+
+.basis-30 {
+    flex-basis: 30%;
+}
+
+p {
+    margin: 2em;
+    text-align: center;
+}

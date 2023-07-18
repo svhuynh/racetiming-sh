@@ -1,0 +1,86 @@
+mat-card {
+    display: flex;
+    flex-direction: column;
+    width: 28em;
+    margin: 0.7em;
+}
+
+mat-card-header {
+    flex-shrink: 0;
+}
+
+mat-card-content {
+    margin-bottom: 0;
+    flex-grow: 1;
+}
+
+mat-card-content i {
+    margin-right: 0.5em;
+}
+
+mat-card-actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-shrink: 0;
+}
+
+mat-card-actions button {
+    margin: 0.4em;
+}
+
+.events {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.event-details {
+    display: flex;
+    flex-direction: row;
+}
+
+.event-details-col {
+    flex-basis: 50%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+#create-event {
+    position: fixed;
+    bottom: 0;
+    margin-right: 3em;
+    margin-bottom: 6em;
+    right: 0;
+}
+
+mat-form-field i {
+    margin-right: 0.6em;;
+}
+
+mat-form-field {
+    margin-left: 0.7em;
+    margin-right: 0.7em;
+}
+
+.spinner {
+    margin: 3em auto;
+}
+
+mat-card-title {
+    position: absolute;
+    transform: translateY(-130%);
+}
+
+.no-events {
+    margin-top: 2em;
+}
+
+a {
+    color: black;
+}
+
+.suffix-button {
+    cursor: pointer;
+}

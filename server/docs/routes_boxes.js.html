@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: routes/boxes.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: routes/boxes.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * This route to fetch, delete, modify or add boxes to the available boxes list.
+ *  Uses {@link module: managers/boxes} to execute stored procedures relating to Boxes table
+ * 
+ * @requires module:managers/boxes
+ * 
+ */
+var express = require('express');
+var protectedRouter = express.Router();
+
+var jwt = require('jsonwebtoken');
+var jwtConfig = require('../config/jwtConfig');
+var boxesManager = require('../managers/boxes');
+
+
+/**
+ * Boxes token verification middleware. 
+ * 
+ * @memberof    routes/boxes
+ * @function
+ * @inner
+ * @param {String} {String} req.headers[xaccestoken] - Token containing the role of the user  
+ * 
+ * @return success or failure
+ */
+protectedRouter.use(function(req, res, next){
+    //Check for token in request
+    //If its a GET request for /api/events/, skip authentification
+      var token = req.body.token || req.query.token || req.headers['x-access-token'];
+      if(token){
+        jwt.verify(token, jwtConfig.secret, function(err, decodedToken){
+          if(err){
+            return res.status(403).json({ success: false, message: 'Failed to authentificate or decode token. '});
+          } else {
+            req.decodedToken = decodedToken;
+            next();
+          }
+        })
+      } else {
+        return res.status(401).send({
+          success: false,
+          message: 'Missing token. Cannot authentificate'
+        });
+      }
+    
+});
+
+/**
+ * Gets the list of available boxes
+ * 
+ * @name get/
+ * @memberof    routes/boxes
+ * @function
+ * @inner
+ * @return  returns HTTP response code 200 on success with properties of available boxes.
+ * Otherwise, return 500 with an error message 
+ * 
+ */
+protectedRouter.get('/', function (req, res, next) {
+    boxesManager.getBoxes(res);
+});
+
+/**
+ * Deletes the box matching the box id
+ * 
+ * @name delete/:boxId
+ * @memberof    routes/boxes
+ * @function
+ * @inner
+ * @param {String} req.params.boxId - box identifier
+ * 
+ * @return returns HTTP response code 200 on success with properties of available boxes.
+ * Otherwise, return 500 with an error message. 
+ * @see {@link: managers/boxes.deleteBox}
+ */
+protectedRouter.delete('/:boxId', function(req, res, next){
+    boxesManager.deleteBox(req.params.boxId, res);
+});
+
+/**
+ * Creates a box with the specified properties and adds it to the list 
+ * of available boxes
+ * 
+ * @name delete/:boxId 
+ * @memberof    routes/boxes
+ * @function
+ * @inner
+ * @param {String} req.body - Name: name of the box, readerIp: IP address of the box to be added
+ * 
+ * @return returns HTTP response code 200 on success.
+ * Otherwise, return 500 with an error message.
+ * 
+ * @see {@link: managers/boxes.createBox}
+ */
+protectedRouter.post('/', function(req, res, next){
+    boxesManager.createBox(req.body, res);
+});
+
+/**
+ * Modifies the box matching the specified identifier with the new properties
+ * 
+ * @name put/
+ * @memberof    routes/boxes
+ * @function
+ * @inner
+ * @param {String} req.body - BoxId: box identifier, Name: name of the box, readerIp: IP address of the box to be added
+ * 
+ * @return returns HTTP response code 200 on success.
+ * Otherwise, return 500 with an error message.
+ * 
+ * @see {@link: managers/boxes.setBox}
+ */
+protectedRouter.put('/', function (req, res, next) {
+    boxesManager.setBox(req.body, res);
+});
+
+/**
+ * Gets the list of used boxes for a given event
+ * 
+ * @name get/:eventId
+ * @memberof    routes/boxes
+ * @function
+ * @inner
+ * @param {String} req.params.eventId - event identifier
+ * 
+ * @return returns HTTP response code 200 on success with list of boxes used with their respective properties.
+ * Otherwise, returns 500 with an error message.
+ * 
+ */
+protectedRouter.get('/:eventId', function (req, res, next) {
+    boxesManager.getEventBoxList(req.params.eventId, res);
+});
+
+/**
+ * This route to fetch, delete, modify or add boxes to the available boxes list.
+ *  Uses {@link module: managers/boxes} to execute stored procedures relating to Boxes table
+ * 
+ * @class routes/boxes
+ * 
+ * 
+ */
+module.exports = protectedRouter;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="managers_authentification.html">managers/authentification</a></li><li><a href="managers_bibs.html">managers/bibs</a></li><li><a href="managers_boxes.html">managers/boxes</a></li><li><a href="managers_events.html">managers/events</a></li><li><a href="managers_participants.html">managers/participants</a></li><li><a href="managers_races.html">managers/races</a></li><li><a href="managers_results.html">managers/results</a></li><li><a href="routes_announcer.html">routes/announcer</a></li><li><a href="routes_bibs.html">routes/bibs</a></li><li><a href="routes_boxes.html">routes/boxes</a></li><li><a href="routes_count.html">routes/count</a></li><li><a href="routes_events.html">routes/events</a></li><li><a href="routes_login.html">routes/login</a></li><li><a href="routes_participants.html">routes/participants</a></li><li><a href="routes_passcodes.html">routes/passcodes</a></li><li><a href="routes_results.html">routes/results</a></li><li><a href="routes_timer.html">routes/timer</a></li></ul><h3>Global</h3><ul><li><a href="global.html#express">express</a></li><li><a href="global.html#logger">logger</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Apr 15 2018 14:02:12 GMT-0400 (Eastern Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

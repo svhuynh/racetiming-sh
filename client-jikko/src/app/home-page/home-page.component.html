@@ -1,0 +1,25 @@
+<div class="main-container">
+    <div class="col">
+        <div>
+            <img src="https://jikko.ca/files/images/accueil/logo-home.png" alt="logo">
+        </div>
+        <form class="input-row">
+            <mat-form-field>
+                <input matInput name="password" type="password" placeholder="Code d'accès" [(ngModel)]="code" autofocus>
+            </mat-form-field>
+            <div class="col">
+              <div class="row">
+                <mat-spinner *ngIf="isLoginLoading" [diameter]="40"></mat-spinner>
+                <button [style.visibility]="isLoginLoading ? 'hidden' : ''"
+                        type="submit"
+                        color="primary"
+                        mat-raised-button
+                        matTooltip="Connexion"
+                        (click)="login()">
+                  <i class="fas fa-sign-in-alt"></i>
+                </button>
+              </div>
+            </div>
+        </form>
+    </div>
+</div>

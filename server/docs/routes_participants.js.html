@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: routes/participants.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: routes/participants.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * This route to fetch, add, modify or delete participants
+ *  Uses {@link module: managers/participants} to execute stored procedures relating to Participants table
+ * 
+ * @requires module:managers/participants
+ * 
+ */
+var express = require('express');
+var protectedRouter = express.Router();
+var participantsManager = require('../managers/participants');
+
+var jwt = require('jsonwebtoken');
+var jwtConfig = require('../config/jwtConfig');
+
+protectedRouter.use(function(req, res, next){
+    //Check for token in request
+		var token = req.body.token || req.query.token || req.headers['x-access-token'];
+		if(token){
+			jwt.verify(token, jwtConfig.secret, function(err, decodedToken){
+				if(err){
+					return res.status(403).json({ success: false, message: 'Failed to authentificate or decode token. '});
+				} else {
+					if(decodedToken.role === 1 || decodedToken.role === 2 || decodedToken.role === 3){
+						req.decodedToken = decodedToken;
+						next();
+				} else {
+						return res.json({ success: false, message: 'Failed; Insufficient rights.'});
+				}
+				}
+			})
+		} else {
+			return res.status(401).send({
+				success: false,
+				message: 'Missing token. Cannot authentificate'
+			});
+		}
+	
+});
+/**
+ *   Gets the list of participants of a race
+ * 
+ * @name get/:eventId/:raceId
+ * @memberof    routes/participants
+ * @function
+ * @inner
+ * @param {String} req.params.eventId - event identifier
+ * @param {String} req.params.raceId - race identifier 
+ * 
+ * @returns returns HTTP response code 200 on success with list of participants with every attribute.
+ * Otherwise, returns 500 with an error message.
+ */
+protectedRouter.get('/:eventId/:raceId', function (req, res, next) {
+    participantsManager.getParticipants(req.params.eventId, req.params.raceId, res);
+});
+
+/**
+ * Deletes all participants for a given race
+ * 
+ * @name delete/:eventId/:raceId
+ * @memberof    routes/participants
+ * @function
+ * @param {String} req.params.eventId - event identifier
+ * @param {String} req.params.raceId - race identifier 
+ * 
+ * @returns returns HTTP response code 200 on success with number of participants deleted.
+ * Otherwise, returns 500 with an error message.
+ */
+protectedRouter.delete('/:eventId/:raceId', function (req, res, next) {
+    participantsManager.deleteParticipants(req.params.eventId, req.params.raceId, res);
+});
+
+/**
+ *  Deletes the matching participant
+ * 
+ * @name delete/:eventId/:raceId/:participantId
+ * @memberof    routes/participants
+ * @function
+ * @inner
+ * @param {String} req.params.eventId - event identifier
+ * @param {String} req.params.raceId - race identifier 
+ * @param {String} req.params.participantId - participant's identifier 
+ * 
+ * @returns returns HTTP response code 200 on success with number of participants deleted.
+ * Otherwise, returns 500 with an error message.
+ */
+protectedRouter.delete('/:eventId/:raceId/:participantId', function (req, res, next) {
+    participantsManager.deleteParticipant(req.params.eventId, req.params.raceId, req.params.participantId, res);
+});
+
+/**
+ *  Modifies the matching participant. The following format is used to modify the properties of the participant.
+ * * &lt;pre>
+ * 	{
+ *	"lastName": "test POST",
+ *	"firstName": "test2", 
+ *	"gender": 1,
+ *	"birthDate": "1900-01-01",
+ *	"age": 100,
+ *	"email": "test3",
+ *	"place": "test4",
+ *	"postalCode": "test5",
+ *	"statut": "test6",
+ *	"phone": "1234567890",
+ *	"team": "teamTest",
+ *	"bibNo": 5,
+ *	"attribute01": "testAttribut01"
+ *  }
+ * &lt;/pre>
+ * 
+ * @name put/:eventId/:raceId/:participantId
+ * @memberof    routes/participants
+ * @function
+ * @inner
+ * @param {String} req.params.eventId - event identifier
+ * @param {String} req.params.raceId - race identifier 
+ * @param {String} req.params.participantId - participant's identifier 
+ * 
+ * @param {String} req.Body - Properties of the participant to modify
+ * 
+ * @returns returns HTTP response code 200 on success.
+ * Otherwise, returns 500 with an error message.
+ */
+protectedRouter.put('/:eventId/:raceId/:participantId', function (req, res, next) {
+    participantsManager.setParticipant(req.params.eventId, req.params.raceId, req.params.participantId, req.body, res);
+});
+
+/**
+ *  Adds a new participant with the specified attributes to the race. The following format is used in the body to set the participants properties
+ * &lt;pre>
+ * {
+ *	"lastName": "test POST",
+ *	"firstName": "test2", 
+ *	"gender": 1,
+ *	"birthDate": "1900-01-01",
+ *	"age": 100,
+ *	"email": "test3",
+ *	"place": "test4",
+ *	"postalCode": "test5",
+ *	"statut": "test6",
+ *	"phone": "1234567890",
+ *	"team": "teamTest",
+ *	"bibNo": 5,
+ *	"attribute01": "testAttribut01"
+ *}
+ * &lt;/pre>
+ * 
+ * @name post/:eventId/:raceId
+ * @memberof    routes/participants
+ * @param {String} req.params.eventId - event identifier
+ * @param {String} req.params.raceId - race identifier 
+ * @function                             
+ * @param {String} req.body -  contains all participant info to be set
+ * 
+ * 
+ * @returns returns HTTP response code 200 on success.
+ * Otherwise, returns 500 with an error message.
+ */
+protectedRouter.post('/:eventId/:raceId', function (req, res, next) {
+    participantsManager.createParticipant(req.params.eventId, req.params.raceId, req.body, res);
+});
+
+/**
+ * This route to fetch, add, modify or delete participants
+ *  Uses {@link module: managers/participants} to execute stored procedures relating to Participants table
+ * 
+ * @class routes/participants
+ * 
+ */
+module.exports = protectedRouter;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="managers_authentification.html">managers/authentification</a></li><li><a href="managers_bibs.html">managers/bibs</a></li><li><a href="managers_boxes.html">managers/boxes</a></li><li><a href="managers_events.html">managers/events</a></li><li><a href="managers_participants.html">managers/participants</a></li><li><a href="managers_races.html">managers/races</a></li><li><a href="managers_results.html">managers/results</a></li><li><a href="routes_announcer.html">routes/announcer</a></li><li><a href="routes_bibs.html">routes/bibs</a></li><li><a href="routes_boxes.html">routes/boxes</a></li><li><a href="routes_count.html">routes/count</a></li><li><a href="routes_events.html">routes/events</a></li><li><a href="routes_login.html">routes/login</a></li><li><a href="routes_participants.html">routes/participants</a></li><li><a href="routes_passcodes.html">routes/passcodes</a></li><li><a href="routes_results.html">routes/results</a></li><li><a href="routes_timer.html">routes/timer</a></li></ul><h3>Global</h3><ul><li><a href="global.html#express">express</a></li><li><a href="global.html#logger">logger</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Apr 15 2018 14:02:12 GMT-0400 (Eastern Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

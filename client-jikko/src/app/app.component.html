@@ -1,0 +1,46 @@
+<header>
+    <mat-toolbar color="primary">
+        <div class="toolbar-container">
+            <div class="flex-row">
+                <button [style.display]="this.getSideNavVisibility() ? '' : 'none'" mat-icon-button (click)="snav.toggle()"><i class="fas fa-bars"></i></button>
+                <h1 class="app-title">Chronométrage Jikko</h1>
+            </div>
+            <div class="flex-row">
+                <p class="role">{{ this.getRoleName() }}</p>
+                <button [style.display]="true ? '' : 'none'" mat-icon-button matTooltip="Déconnexion" (click)="logout()"><i class="fas fa-sign-out-alt fa-lg"></i></button>
+            </div>
+        </div>
+    </mat-toolbar>
+</header>
+
+<mat-sidenav-container class="container">
+    <mat-sidenav #snav mode="side" opened="true" class="sidenav" [style.display]="this.getSideNavVisibility() ? '' : 'none'">
+            <mat-nav-list>
+                <a mat-list-item routerLink="events" routerLinkActive="active-link"><span><i class="far fa-calendar-alt"></i>Événements</span></a>
+
+                <div *ngIf="getCurrentEventId() > 0">
+                    <h3 matSubheader>{{getCurrentEventName()}}</h3>
+                    <a mat-list-item [routerLink]="'./timing/' + getCurrentEventId()" routerLinkActive="active-link"><span class="eventNavItem"><i class="fas fa-stopwatch fa-fw"></i>Chronométrage</span></a>
+                    <a mat-list-item [routerLink]="'./participants/' + getCurrentEventId()" routerLinkActive="active-link"><span class="eventNavItem"><i class="fas fa-users fa-fw"></i>Participants</span></a>
+                    <a mat-list-item [routerLink]="'./bibs/' + getCurrentEventId()" routerLinkActive="active-link"><span class="eventNavItem"><i class="fas fa-address-card fa-fw"></i>Dossards</span></a>
+                    <a mat-list-item [routerLink]="'./announcer/' + getCurrentEventId()" routerLinkActive="active-link"><span class="eventNavItem"><i class="fas fa-bullhorn fa-fw"></i>Annonceur</span></a>
+                    <a mat-list-item [routerLink]="'./results/' + getCurrentEventId()" routerLinkActive="active-link"><span class="eventNavItem"><i class="fas fa-trophy fa-fw"></i>Résultats</span></a>
+                    <a mat-list-item [routerLink]="'./events/' + getCurrentEventId()" routerLinkActive="active-link"><span class="eventNavItem"><i class="fas fa-cog fa-fw"></i>Configuration</span></a>
+                </div>
+                <mat-divider></mat-divider>
+
+                <a mat-list-item routerLink="availableBoxes" routerLinkActive="active-link"><i class="fas fa-cube"></i>Boites de lecture</a>
+                <a mat-list-item routerLink="accounts" routerLinkActive="active-link"><i class="fas fa-user-circle"></i>Codes d'accès</a>
+                <a mat-list-item routerLink="about" routerLinkActive="active-link"><i class="fas fa-info-circle"></i>À propos</a>
+            </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <main>
+            <router-outlet (activate)="onRouterActivate($event)"></router-outlet>
+        </main>
+    </mat-sidenav-content>
+</mat-sidenav-container>
+
+<footer>
+    <mat-toolbar>© 2018 Jikko Tous droits réservés</mat-toolbar>
+</footer>

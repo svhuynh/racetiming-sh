@@ -1,0 +1,54 @@
+
+<h1 class="mat-display-1">Événements</h1>
+<mat-form-field>
+    <input matInput (input)="filterEvents()" [(ngModel)]="textFilter" placeholder="Rechercher" type="text" class="example-right-align">
+    <span matPrefix><i class="fas fa-search"></i></span>
+    <span matSuffix class="suffix-button" (click)="clearFilter()" [style.visibility]="textFilter.length > 0 ? '' : 'hidden'"><i class="fas fa-times"></i></span>
+</mat-form-field>
+<mat-form-field>
+    <mat-select (selectionChange)="filterEvents()" [(ngModel)]="dateFilter" placeholder="Afficher">
+        <mat-option value="all">Tout</mat-option>
+        <mat-option value="toCome">Événements à venir</mat-option>
+        <mat-option value="past">Événements précédents</mat-option>
+    </mat-select>
+</mat-form-field>
+
+<mat-spinner *ngIf="areEventsLoading" class="spinner"></mat-spinner>
+<p *ngIf="!areEventsLoading && renderedEvents.length < 1" class="no-events">Aucun événement ne correspond aux critères.</p>
+<div class="events">
+  <mat-card *ngFor="let event of renderedEvents">
+      <a routerLink="../events/{{event.Id}}"><img mat-card-image [src]="getEventThumbnail(event)" alt="Image d'une carte du lieu de l'événement"></a>
+      <mat-card-header>
+        <a routerLink="../events/{{event.Id}}"><mat-card-title><h2 style="font-weight: bolder !important;">{{event.Name}}</h2></mat-card-title></a>
+      </mat-card-header>
+
+      <mat-card-content>
+        <p>
+          {{event.Description}}
+        </p>
+        <div class="event-details">
+            <div class="event-details-col larger">
+                <span><i class="far fa-calendar-alt fa-fw"></i>{{event.StartDate | dateUtc | date: 'fullDate' }}</span>
+                <br>
+                <span><i class="fas fa-map-marker-alt fa-fw"></i>{{event.Place}}</span>
+            </div>
+            <div class="event-details-col smaller">
+                <span><i class="fas fa-users fa-fw"></i>{{event.ParticipantCount}} participants</span>
+                <br>
+                <span><i class="fas fa-flag-checkered fa-fw"></i>{{event.RaceCount}} épreuves</span>
+            </div>
+        </div>
+
+      </mat-card-content>
+      <mat-card-actions>
+          <button mat-mini-fab routerLink="../timing/{{event.Id}}" matTooltip="Chronométrage"><i class="fas fa-stopwatch"></i></button>
+          <button mat-mini-fab routerLink="../participants/{{event.Id}}" matTooltip="Participants"><i class="fas fa-users"></i></button>
+          <button mat-mini-fab routerLink="../bibs/{{event.Id}}" matTooltip="Dossards"><i class="fas fa-address-card"></i></button>
+          <button mat-mini-fab routerLink="../announcer/{{event.Id}}" matTooltip="Annonceur"><i class="fas fa-bullhorn"></i></button>
+          <button mat-mini-fab routerLink="../results/{{event.Id}}" matTooltip="Résultats"><i class="fas fa-trophy"></i></button>
+          <button mat-mini-fab routerLink="../events/{{event.Id}}" matTooltip="Configuration"><i class="fas fa-cog"></i></button>
+      </mat-card-actions>
+  </mat-card>
+
+  <button mat-fab (click)="onCreate()" id="create-event" color="primary" matTooltip="Créer un événement"><i class="fas fa-plus"></i></button>
+</div>

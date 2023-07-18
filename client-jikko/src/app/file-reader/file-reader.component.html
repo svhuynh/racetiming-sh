@@ -1,0 +1,7 @@
+<div class="file">
+    <button mat-raised-button color="primary" matTooltip="Téléverser un fichier XLSX" (click)="fileInput.click()">
+            <label for="file"></label>
+            <i class="fas fa-upload fa-lg"></i>
+            <input #fileInput type="file" id="file" (change)="handleFileInput($event.target.files)" style="display:none;">
+    </button>  
+</div>

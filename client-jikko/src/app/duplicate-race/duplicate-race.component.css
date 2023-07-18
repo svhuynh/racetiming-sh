@@ -1,0 +1,9 @@
+.overflowMatAccordion {
+    max-height: 30em;
+    overflow: auto;
+}
+
+.overflowMatSelectionList {
+    max-height: 15em;
+    overflow: auto;
+}

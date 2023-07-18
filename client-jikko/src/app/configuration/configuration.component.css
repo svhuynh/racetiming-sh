@@ -1,0 +1,75 @@
+.formField {
+    flex-basis: 50%;
+}
+
+.formField > * {
+    width: 95%;
+    font-size: 1em;
+}
+
+agm-map {
+  height: 21em;
+}
+
+.flexRow {
+    display: flex;
+    flex-direction: row;
+}
+
+.flexCol {
+    display: flex;
+    flex-direction: column;
+    margin-left: 1em;
+    margin-right: 1em;
+}
+
+.buttonsGroup {
+    float: right;
+    margin-bottom: 1em;
+}
+
+.spinner {
+    margin: 3em auto;
+}
+
+.races {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+mat-card {
+    display: flex;
+    flex-direction: column;
+    width: 15em;
+    margin: 0.7em;
+    cursor: pointer;
+}
+
+mat-card-header {
+    flex-shrink: 0;
+}
+
+mat-card-content {
+    margin-bottom: 0;
+    flex-grow: 1;
+}
+
+mat-card-content i {
+    margin-right: 0.5em;
+}
+
+mat-card-actions {
+    flex-shrink: 0;
+}
+
+mat-card-actions button {
+    margin: 0.4em;
+}
+
+.half-parent {
+    flex-basis: 50%;
+}
+
+.marginRight {
+    margin-right: 2em;
+}

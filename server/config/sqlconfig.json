@@ -1,0 +1,9 @@
+{
+  "user": "dbmaster2",
+  "password": "Nh5v3rYK",
+  "server": "jikko-db.c7r33d37lmgg.us-east-1.rds.amazonaws.com",
+  "port": "1433",
+  "database": "Jikko",
+  "encrypt": true,
+  "debug": true
+}

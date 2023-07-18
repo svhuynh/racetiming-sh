@@ -1,0 +1,13 @@
+{
+  "name": "jikko",
+  "version": "1.0.0",
+  "description": "Système de chronométrage Jikko.",
+  "main": "index.js",
+  "scripts": {
+    "install": "cd ./client-jikko && npm install && cd .. && cd ./server && npm install",
+    "start": "concurrently \"cd ./client-jikko && npm start\" \"cd ./server && npm run-script startDev\""
+  },
+  "dependencies": {
+    "concurrently": "^3.5.1"
+  }
+}

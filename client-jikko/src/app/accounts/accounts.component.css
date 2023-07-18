@@ -1,0 +1,16 @@
+mat-list {
+    margin: auto;
+    width: 25%;
+}
+
+#create-account {
+    position: fixed;
+    bottom: 0;
+    margin-right: 3em;
+    margin-bottom: 6em;
+    right: 0;
+}
+
+mat-spinner {
+    margin: 2em auto;
+}

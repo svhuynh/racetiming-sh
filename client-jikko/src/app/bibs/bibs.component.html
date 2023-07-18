@@ -1,0 +1,28 @@
+<div class="flex-col fill-height">
+    <h1 class="mat-display-1 no-shrink">Dossards</h1>
+
+    <div class="excel no-shrink">
+        <app-download-excel-file [fieldsDescription]="fieldsDescription"
+                                 (click)="downloadJSONToXLSX()">
+        </app-download-excel-file>
+
+        <div class="file">
+            <button mat-raised-button matTooltip="Téléverser un fichier XLSX" color="primary" (click)="fileInput.click()">
+                    <label for="file"></label>
+                    <i class="fas fa-upload fa-lg"></i>
+                    <input #fileInput type="file" id="file" (change)="handleFileInput($event.target.files)" style="display:none;">
+            </button>  
+        </div>
+    </div>
+
+    <div class="data-table-container">
+        <app-data-table class="fill-width"
+                        (editSelection)="onEditSelection($event)"
+                        (deleteSelection)="onDeleteSelection($event)"
+                        (addClick)="onAddClick()"
+                        (addSave)="onAddSave($event)"
+                        [areItemsLoading]="areBibsLoading"
+                        [fieldsDescription]="fieldsDescription">
+        </app-data-table>
+    </div> 
+</div>

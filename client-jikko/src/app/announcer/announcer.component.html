@@ -1,0 +1,38 @@
+<div class="flex-col fill-height">
+    <h1 class="mat-display-1 no-shrink">Annonceur</h1>
+
+    <div class="container no-shrink">
+            <mat-form-field [style.visibility]="boxes != null && boxes.length > 0 ? '' : 'hidden'">
+                <mat-select [(ngModel)]="selectedBox" (selectionChange)="onBoxChange($event)" placeholder="Boite" name="box">
+                    <mat-option *ngFor="let box of boxes" [value]="box">{{box.BoxName}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+    
+        <div class="flex-row" [style.display]= "isPassCodeVisible ? '' : 'none'">
+            <mat-form-field >
+                <input matInput placeholder="Code d'accès" type="text" value={{accessCode}} disabled=true>
+            </mat-form-field>
+            
+            <div>
+                <button mat-icon-button matTooltip="Copier le code d'accès" ngxClipboard [cbContent]="accessCode"><i class="fas fa-clipboard fa-lg"></i></button>
+            </div>
+        </div>
+
+        <!-- Hidden to put the button in the middle -->
+        <div [style.visibility]= "'hidden'">
+            <mat-form-field >
+                <input matInput>
+            </mat-form-field>
+            <button></button>
+        </div>
+    </div>
+
+    <div class="data-table-container">
+        <app-data-announcer-table class="fill-width"
+                [areItemsLoading]="areTimesLoading"
+                [fieldsDescription]="fieldsDescription"
+                [canEditItems]="false"
+                [canAddItems]="false">
+        </app-data-announcer-table>
+    </div>
+</div> 

@@ -1,0 +1,12 @@
+<h1>Codes d'accès de chronométreur</h1>
+
+<mat-spinner *ngIf="areCodesLoading"></mat-spinner>
+
+<mat-list *ngIf="!areCodesLoading">
+  <mat-list-item *ngFor="let code of allCodes">
+    <p mat-line>{{code.Passcode}}</p>
+    <button mat-mini-fab matTooltip="Supprimer" (click)="onDelete(code.Passcode)"><i class="fas fa-trash-alt"></i></button>
+  </mat-list-item>
+</mat-list>
+
+<button mat-fab (click)="onCreate()" id="create-account" color="primary" matTooltip="Créer un accès"><i class="fas fa-plus"></i></button>

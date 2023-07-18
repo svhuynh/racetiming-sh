@@ -1,0 +1,29 @@
+.flex-col {
+    display: flex;
+    flex-direction: column;
+}
+
+.no-shrink {
+    flex-shrink: 0;
+}
+
+.data-table-container {
+    display: flex;
+    flex-grow: 1;
+    width: 100%;
+}
+
+.fill-width {
+    width: 100%;
+}
+
+.fill-height {
+    height: 100%;
+}
+
+button {
+    display: block;
+    position: absolute;
+    right: 0;
+    transform: translateX(-100%)
+}

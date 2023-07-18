@@ -1,0 +1,37 @@
+<div class="flex-col">
+    <h1 class="mat-display-1"
+        [ngClass]="{'hide': isFilteredTimesFullScreen || isParticipantsResultsFullScreen}">
+        Chronométrage
+    </h1>
+    <mat-button-toggle-group class="flex no-shrink"
+                                [ngClass]="{'hide': isFilteredTimesFullScreen || isParticipantsResultsFullScreen}"
+                                [(ngModel)]="selectedRace"
+                                name="race">
+        <mat-button-toggle *ngFor="let race of races" class="flex" [value]="race" ngDefaultControl>
+            {{race.Name}}
+        </mat-button-toggle>
+    </mat-button-toggle-group>
+
+ 
+    <div class="col-1 flex-row"
+            [ngClass]="{'full-screen': isFilteredTimesFullScreen,
+                'hide': isParticipantsResultsFullScreen}">
+        <app-boxes-activity class="row-1 elevation-padding"
+                            [ngClass]="{'hide': isFilteredTimesFullScreen}"
+                            [selectedRace]="selectedRace">
+        </app-boxes-activity>
+        <app-filtered-times class="row-2 elevation-padding"
+                            [ngClass]="{'full-screen': isFilteredTimesFullScreen}"
+                            [selectedRace]="selectedRace"
+                            [filteredTimes]="filteredTimes"
+                            (fullScreenClick)="onFilteredTimesFullScreen()">
+        </app-filtered-times>
+    </div>
+    <app-participants-results class="col-2 elevation-padding"
+                            [ngClass]="{'full-screen': isParticipantsResultsFullScreen,
+                                'hide': isFilteredTimesFullScreen}"
+                            [selectedRace]="selectedRace"
+                            [filteredTimes]="filteredTimes"
+                            (fullScreenClick)="onParticipantsResultsFullScreen()">
+    </app-participants-results>
+</div>

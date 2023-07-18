@@ -1,0 +1,14 @@
+<div class="flex-col fill-height">
+    <div>
+        <button mat-icon-button (click)="onFullScreenClick()" matTooltip="Plein écran"><i class="fas fa-expand fa-lg"></i></button>
+        <h1 class="no-shrink">Participants</h1>
+    </div>
+    <div class="data-table-container">
+        <app-data-table class="fill-width"
+                        [fieldsDescription]="fieldsDescription"
+                        [areItemsLoading]="areParticipantsResultsLoading"
+                        [canAddItems]="false"
+                        [canEditItems]="false">
+        </app-data-table>
+    </div>
+</div>

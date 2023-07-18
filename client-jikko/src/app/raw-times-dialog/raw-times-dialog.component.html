@@ -1,0 +1,49 @@
+<div class="container">
+    <h2 mat-dialog-title>Temps bruts</h2>
+
+    <mat-form-field>
+        <input matInput type="number" placeholder="Numéro de dossard" [(ngModel)]="bibNo" (ngModelChange)="bibNoChange($event)">
+    </mat-form-field>
+
+    <h3 *ngIf="allFilteredTimes !== undefined && allFilteredTimes.length > 0">Participant: {{allFilteredTimes[0].FirstName}}, {{allFilteredTimes[0].LastName}}</h3>
+
+    <div class="flex-row" *ngIf="allFilteredTimes !== undefined && allFilteredTimes.length > 0">
+
+        <div class="flex-column">
+            <h3>Temps filtrés</h3>
+            <table matSort>
+                <tr>
+                    <th mat-sort-header="Position">Split (km)</th>
+                    <th mat-sort-header="ChipTime">Temps</th>
+                </tr>
+            
+                <tr *ngFor="let filteredTime of allFilteredTimes">
+                    <td>{{filteredTime.Position | toMeter}}</td>
+                    <td>{{filteredTime.ChipTime | dateTimeUtc | date:'mediumTime'}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="flex-column raw-times">
+            <h3>Temps bruts</h3>
+            <table matSort>
+                <tr>
+                    <th mat-sort-header="BoxName" style="min-width:100px">Boite</th>
+                    <th mat-sort-header="ChipTime" style="min-width:100px">Temps</th>
+                    <th mat-sort-header="PeakRSSI" style="min-width:100px">Signal (dB)</th>
+                </tr>
+
+                <tr *ngFor="let rawTime of allRawTimes">
+                    <td style="min-width:100px">{{rawTime.BoxName}}</td>
+                    <td style="min-width:150px">{{rawTime.ChipTime | dateTimeUtc | date:'mediumTime'}}</td>
+                    <td style="min-width:100px">{{rawTime.PeakRSSI}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div mat-dialog-actions>
+        <button mat-button [mat-dialog-close]>Fermer</button>
+    </div>
+
+</div>

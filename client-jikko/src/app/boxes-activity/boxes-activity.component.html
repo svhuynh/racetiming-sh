@@ -1,0 +1,13 @@
+<div class="flex-col fill-height">
+  <h1 class="no-shrink">Boites</h1>
+  <div class="list-container mat-elevation-z8">
+    <mat-spinner *ngIf="areBoxesLoading" class="spinner"></mat-spinner>
+    <mat-list *ngIf="!areBoxesLoading" class="fill-width">
+      <mat-list-item *ngFor="let box of allBoxes" [style.background]="box.color">
+        <!-- <mat-icon><i class="fas fa-check-circle"></i></mat-icon>
+        <mat-icon><i class="fas fa-times-circle"></i></mat-icon> -->
+        <p mat-line><i class="fas fa-cube"></i>{{ box.Name }} </p>
+      </mat-list-item>
+    </mat-list>
+  </div>
+</div>

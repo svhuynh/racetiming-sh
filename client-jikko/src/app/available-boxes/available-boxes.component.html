@@ -1,0 +1,15 @@
+<div class="flex-col fill-height">
+    <h1 class="mat-display-1 no-shrink">Boites de lecture</h1>
+    
+    <div class="data-table-container">
+        <app-data-table
+            class="fill-width"
+            [areItemsLoading]="areBoxesLoading"
+            (editSelection)="onEditSelection($event)"
+            (deleteSelection)="onDeleteSelection($event)"
+            (addClick)="onAddClick()"
+            (addSave)="onAddSave($event)"
+            [fieldsDescription]="fieldsDescription">
+        </app-data-table>
+    </div>
+</div>

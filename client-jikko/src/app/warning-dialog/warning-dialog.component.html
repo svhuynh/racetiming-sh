@@ -1,0 +1,10 @@
+<div class="width">
+    <h2 mat-dialog-title>Avertissement</h2>
+    <p>La date de début, l'heure, la cadence maximale ou la disposition de l'épreuve a changé. 
+        Ce changement va regénérer tous les temps. Voulez-vous sauvegarder ce changement et regénérer les temps?</p>
+    <div mat-dialog-actions>
+        <button mat-button [mat-dialog-close]="true">Oui</button>
+        <button mat-button (click)="onNoClick()">Non</button>
+    </div>
+</div>
+

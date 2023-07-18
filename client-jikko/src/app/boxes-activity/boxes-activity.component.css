@@ -1,0 +1,35 @@
+.flex-col {
+    display: flex;
+    flex-direction: column;
+}
+
+.no-shrink {
+    flex-shrink: 0;
+}
+
+.list-container {
+    display: flex;
+    flex-grow: 1;
+    width: 100%;
+    overflow: auto;
+}
+
+.fill-width {
+    width: 100%;
+}
+
+.fill-height {
+    max-height: 100%;
+}
+
+.spinner {
+    margin: 1em auto;
+}
+
+mat-list {
+    padding: 0;
+}
+
+mat-list-item i {
+    margin-right: 0.5em;
+}

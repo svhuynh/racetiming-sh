@@ -1,0 +1,23 @@
+.flex-col {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.no-shrink {
+    flex-shrink: 0;
+}
+
+.public-results-container {
+    display: flex;
+    width: 100%;
+    flex-grow: 1;
+}
+
+.fill-width {
+    width: 100%;
+}
+
+::ng-deep div.tab-container {
+    padding-bottom: 1em !important;
+}

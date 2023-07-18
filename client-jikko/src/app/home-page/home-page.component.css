@@ -1,0 +1,41 @@
+.main-container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    position: absolute;
+}
+
+.col {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.input-row {
+    display: flex;
+    justify-content: center;
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
+    font-size: 1.5em;
+}
+
+button {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+mat-form-field {
+    margin-left: 1em;
+    margin-right: 1em;
+}
+
+mat-spinner {
+  position: absolute;
+}

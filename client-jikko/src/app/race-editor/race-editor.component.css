@@ -1,0 +1,185 @@
+:host {
+  display: block;
+  box-sizing: border-box;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.center-row {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+}
+
+.col {
+  flex-grow: 1;
+  margin: 1em;
+}
+
+.col-2 {
+  flex-grow: 2;
+  margin: 1em;
+}
+
+mat-card {
+  transition: transform 200ms, opacity 200ms;
+  padding: 1.2em;
+}
+
+mat-card {
+  cursor: grab;
+}
+
+mat-card i {
+  margin-right: 0.7em;
+
+}
+
+mat-card a {
+  cursor: pointer;
+}
+
+mat-card button.mat-icon-button {
+  height: 20px;
+}
+
+.fa-rotate-285 {
+  -webkit-transform: rotate(285deg);
+  -moz-transform: rotate(285deg);
+  -ms-transform: rotate(285deg);
+  -o-transform: rotate(285deg);
+  transform: rotate(285deg);
+}
+
+mat-toolbar {
+  font-size: 1.1em;
+  background: rgb(221, 221, 221);
+  height: 3.5em;
+}
+
+.dndDraggingSource {
+  opacity: .5;
+  transform: scale(.98);
+}
+
+.loop {
+  padding-top: 1em;
+  min-height: 3em;
+}
+
+.forms {
+  display: flex;
+  flex-direction: column;
+
+  margin-top: 1em;
+}
+
+.forms mat-form-field {
+  /*width: 20em;*/
+}
+
+.grow {
+  flex-grow: 1;
+}
+
+.grow-2 {
+  flex-grow: 2;
+}
+
+.shrink {
+  flex-shrink: 1;
+  min-width: 10px;
+}
+
+.dndPlaceholder {
+  background: rgba(0, 0, 0, 0.05);
+  border: 2px dashed rgba(0, 0, 0, 0.39);
+}
+
+mat-card input {
+  width: 4em;
+  padding-left: 0.5em;
+}
+
+.distance-suffix, .laps-suffix {
+  margin-left: 0.4em;
+}
+
+mat-card a {
+  margin-left: 1.2em;
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+mat-form-field {
+  margin-left: 1em;
+  margin-right: 1em;
+}
+
+.stay-visible {
+  min-height: 4em;
+  background: white;
+}
+
+.padded {
+  padding: 1em;
+}
+
+.centered-bottom-row {
+  display: flex;
+  justify-content: center;
+}
+
+.centered-bottom-row button {
+  margin: 0.3em;
+}
+
+.spinner {
+  margin: 1em auto;
+}
+
+.invisible {
+  visibility: hidden;
+}
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.no-shrink {
+  flex-shrink: 0;
+}
+
+.space-top {
+  margin-top: 1em;
+}
+
+.name-input {
+  width: 94%;
+}
+
+.forms-row {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: center;
+}
+
+.time-button-col {
+  display: flex;
+  flex-direction: column;
+}

@@ -1,0 +1,8 @@
+{
+	"source": {
+        "include": [ "server/managers", "server/routes" ],
+        "exclude": [ "server/views", "server/key", "server/config", "server/.ebextensions", "server/bin", "server/node_modules", "server/public"  ],
+        "includePattern": ".+\\.js(doc|x)?$",
+        "excludePattern": "(^|\\/|\\\\)_"
+    }
+}

@@ -1,0 +1,63 @@
+<div class="flex-col fill-height">
+	<h1 class="mat-display-1 no-shrink">Participants</h1>
+
+	<div class="participants-options no-shrink">
+		<mat-form-field [style.visibility]="races != null && races.length > 0 ? '' : 'hidden'">
+			<mat-select [(ngModel)]="selectedRace" (selectionChange)="onRaceChange($event)" placeholder="Épreuve" name="race">
+				<mat-option *ngFor="let race of races" [value]="race">{{race.Name}}</mat-option>
+			</mat-select>
+		</mat-form-field>
+
+		<div class="flex-row" [style.display]="areParticipantsLoading ||
+		(!areParticipantsLoading &&
+		races.length > 0) ? '' : 'none'">
+			<mat-form-field [style.display]= "isPassCodeVisible ? '' : 'none'">
+				<input matInput placeholder="Code d'accès" type="text" value={{accessCode}} disabled=true>
+			</mat-form-field>
+			
+			<div>
+				<button [style.display]= "isPassCodeVisible ? '' : 'none'" mat-icon-button matTooltip="Copier le code d'accès" ngxClipboard [cbContent]="accessCode"><i class="fas fa-clipboard fa-lg"></i></button> 
+			</div>
+		</div>
+
+		<div class="flex-row">
+			<div class="excel" [style.display]="areParticipantsLoading ||
+			(!areParticipantsLoading &&
+			races.length > 0) ? '' : 'none'">
+				<app-download-excel-file [fieldsDescription]="fieldsDescription"
+											(click)="downloadJSONToXLSX()">
+				</app-download-excel-file>
+			</div>
+			<div>
+				<app-file-reader
+				[selectedRace]="selectedRace"
+				(fileUploadStarted)="onFileUploadStarted()"
+				(fileUploadDone)="refreshParticipants()"
+				[style.display]="areParticipantsLoading ||
+				(!areParticipantsLoading &&
+				races.length > 0) ? '' : 'none'"> 
+				</app-file-reader>
+			</div>
+		</div>
+		
+	</div>
+
+	<div class="data-table-container">
+		<app-data-table
+			class="fill-width"
+			[style.display]="areParticipantsLoading ||
+			(!areParticipantsLoading &&
+			races.length > 0) ? '' : 'none'"
+			(editSelection)="onEditSelection($event)"
+			(deleteSelection)="onDeleteSelection($event)"
+			(addClick)="onAddClick()"
+			(editClick)="editClick($event)"
+			(addSave)="onAddSave($event)"
+			[areItemsLoading]="areParticipantsLoading"
+			[fieldsDescription]="fieldsDescription">
+		</app-data-table>
+		<p *ngIf="!areParticipantsLoading && races.length < 1">
+			Vous devez ajouter une épreuve à l'événement pour y inscrire des participants.
+		</p>
+	</div>
+</div>
